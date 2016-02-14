@@ -15,7 +15,7 @@ func main() {
 	for s.Scan() {
 		f, err := strconv.ParseFloat(s.Text(), 64)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error parsing float: %v", err)
+			fmt.Fprintf(os.Stderr, "error parsing float: %v\n", err)
 			continue
 		}
 		a = append(a, f)
