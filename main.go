@@ -25,7 +25,7 @@ func main() {
 	fmt.Fprintf(os.Stdout, "max %.4f\n", max(a))
 	fmt.Fprintf(os.Stdout, "sum %.4f\n", sum(a))
 	fmt.Fprintf(os.Stdout, "mean %.4f\n", mean(a))
-	fmt.Fprintf(os.Stdout, "median %.4f\n", mean(a))
+	fmt.Fprintf(os.Stdout, "median %.4f\n", median(a))
 	fmt.Fprintf(os.Stdout, "modes %v\n", modes(a))
 	fmt.Fprintf(os.Stdout, "stdev %.4f\n", stdev(a))
 }
