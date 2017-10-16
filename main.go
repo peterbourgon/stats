@@ -11,6 +11,7 @@ import (
 
 func main() {
 	s := bufio.NewScanner(os.Stdin)
+	s.Split(bufio.ScanWords)
 	a := []float64{}
 	for s.Scan() {
 		f, err := strconv.ParseFloat(s.Text(), 64)
@@ -21,6 +22,7 @@ func main() {
 		a = append(a, f)
 	}
 
+	fmt.Fprintf(os.Stdout, "n %d\n", len(a))
 	fmt.Fprintf(os.Stdout, "min %.4f\n", min(a))
 	fmt.Fprintf(os.Stdout, "max %.4f\n", max(a))
 	fmt.Fprintf(os.Stdout, "sum %.4f\n", sum(a))
