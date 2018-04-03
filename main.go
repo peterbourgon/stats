@@ -2,11 +2,15 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"math"
 	"os"
 	"sort"
 	"strconv"
+	"strings"
+
+	"github.com/fastly/go-workspace/go/src/text/tabwriter"
 )
 
 func main() {
@@ -30,6 +34,7 @@ func main() {
 	fmt.Fprintf(os.Stdout, "median %.4f\n", median(a))
 	fmt.Fprintf(os.Stdout, "modes %v\n", modes(a))
 	fmt.Fprintf(os.Stdout, "stdev %.4f\n", stdev(a))
+	fmt.Fprintln(os.Stdout, histogram(a))
 }
 
 // https://github.com/ae6rt/golang-examples/blob/master/goeg/src/statistics_ans/statistics.go
@@ -101,4 +106,45 @@ func stdev(a []float64) float64 {
 	}
 	variance := total / float64(len(a)-1)
 	return math.Sqrt(variance)
+}
+
+func histogram(a []float64) string {
+	// Alloc the buckets.
+	type bucket struct {
+		min, max float64
+		count    int
+	}
+	var (
+		n       = 10
+		buckets = make([]bucket, n)
+		delta   = (max(a) - min(a)) / float64(n)
+	)
+	for i := 0; i < n; i++ {
+		buckets[i].min = min(a) + (float64(i+0) * delta)
+		buckets[i].max = min(a) + (float64(i+1) * delta)
+	}
+
+	// Count into the buckets.
+	for _, v := range a {
+		for i := range buckets {
+			if buckets[i].min <= v && v <= buckets[i].max {
+				buckets[i].count++
+			}
+		}
+	}
+
+	// Draw the buckets.
+	draw := func(v, total int) string {
+		n := (float64(v) / float64(total)) * 100
+		return strings.Repeat("*", int(n))
+	}
+	var (
+		buf = &bytes.Buffer{}
+		tw  = tabwriter.NewWriter(buf, 0, 1, 1, ' ', 0)
+	)
+	for _, b := range buckets {
+		fmt.Fprintf(tw, "%.4f-%.4f\t%d\t%s\n", b.min, b.max, b.count, draw(b.count, len(a)))
+	}
+	tw.Flush()
+	return buf.String()
 }
