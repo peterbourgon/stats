@@ -34,7 +34,7 @@ func main() {
 	fmt.Fprintf(os.Stdout, "median %.4f\n", median(a))
 	fmt.Fprintf(os.Stdout, "modes %v\n", modes(a))
 	fmt.Fprintf(os.Stdout, "stdev %.4f\n", stdev(a))
-	fmt.Fprintln(os.Stdout, histogram(a))
+	fmt.Fprintf(os.Stdout, "%s", histogram(a))
 }
 
 // https://github.com/ae6rt/golang-examples/blob/master/goeg/src/statistics_ans/statistics.go
