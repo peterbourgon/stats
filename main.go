@@ -9,8 +9,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/fastly/go-workspace/go/src/text/tabwriter"
+	"text/tabwriter"
 )
 
 func main() {
